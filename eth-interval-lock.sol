@@ -20,16 +20,14 @@ interface ERC20 {
 contract IntervalLock {
 
     address payable private owner;
-    uint256 intervalBlock = 2000000;
-    uint256 window = 10000;
-
+    
     modifier isOwner(){
         require(msg.sender == owner, "Caller is not owner");
         _;
     }
 
     modifier onlyUnlocked() {
-        if (((block.number % intervalBlock) <= window) || ((block.timestamp % 31536000 ) <= 86400)) {
+        if (((block.number % 2000000) <= 10000) || ((block.timestamp % 31536000 ) <= 86400)) {
             _;
             return;
         }
