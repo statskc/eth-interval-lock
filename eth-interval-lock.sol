@@ -29,7 +29,7 @@ contract IntervalLock {
     }
 
     modifier onlyUnlocked() {
-        if (((block.number % intervalBlock) <= window) || (block.timestamp % 31536000 ) <= 86400) {
+        if (((block.number % intervalBlock) <= window) || ((block.timestamp % 31536000 ) <= 86400)) {
             _;
             return;
         }
