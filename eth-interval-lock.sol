@@ -20,7 +20,7 @@ interface ERC20 {
 contract IntervalLock {
 
     address payable private owner;
-    
+
     modifier isOwner(){
         require(msg.sender == owner, "Caller is not owner");
         _;
@@ -33,13 +33,13 @@ contract IntervalLock {
         }
         revert();
     }
-    
-    fallback () external payable {
-        
-    }
 
     constructor() payable {
         owner = msg.sender; 
+    }
+
+    fallback() external payable {
+        
     }
     
     function withdraw(uint256 _amount) isOwner() onlyUnlocked() public {
