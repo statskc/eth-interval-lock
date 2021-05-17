@@ -14,7 +14,7 @@ contract IntervalLock {
 
     address payable private owner;
 
-    modifier isOwner(){
+    modifier isOwner() {
         require(msg.sender == owner, "Caller is not owner");
         _;
     }
