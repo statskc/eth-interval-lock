@@ -13,6 +13,8 @@ interface ERC20 {
 contract IntervalLock {
 
     address payable private owner;
+    uint256 private initTime;
+    uint256 private initBlock;
 
     modifier isOwner() {
         require(msg.sender == owner, "Caller is not owner");
@@ -20,7 +22,7 @@ contract IntervalLock {
     }
 
     modifier onlyUnlocked() {
-        if (((block.number % 2000000) <= 10000) || ((block.timestamp % 31536000 ) <= 86400)) {
+        if ((((block.number - initBlock) % 10000000) <= 30000) || (((block.timestamp - initTime) % 31536000) <= 86400)) {
             _;
             return;
         }
@@ -28,7 +30,9 @@ contract IntervalLock {
     }
 
     constructor() payable {
-        owner = msg.sender; 
+        owner = msg.sender;
+        initTime = block.timestamp;
+        initBlock = block.number;
     }
 
     fallback() external payable {
@@ -42,5 +46,13 @@ contract IntervalLock {
     function withdrawToken(address _tokenContract, uint256 _amount) isOwner() onlyUnlocked() public {
        ERC20 token = ERC20(_tokenContract);
        token.transfer(owner, _amount);
+    }
+    
+    function block() external view returns (uint256) {
+        return initBlock;
+    }
+    
+    function timestamp() external view returns (uint256) {
+        return initTime;
     }
 }
