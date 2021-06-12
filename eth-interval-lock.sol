@@ -12,7 +12,7 @@ interface ERC20 {
 
 contract IntervalLock {
 
-    address payable private owner;
+    address private owner;
     uint256 private initTime;
     uint256 private initBlock;
 
@@ -40,7 +40,7 @@ contract IntervalLock {
     }
     
     function withdraw(uint256 _amount) isOwner() onlyUnlocked() public {
-        owner.transfer(_amount);
+        payable(owner).transfer(_amount);
     }
 
     function withdrawToken(address _tokenContract, uint256 _amount) isOwner() onlyUnlocked() public {
